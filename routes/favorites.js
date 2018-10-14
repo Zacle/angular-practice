@@ -3,6 +3,7 @@ var FavoriteRouter = express.Router();
 const bodyParser = require('body-parser');
 var Favorites = require('../models/favorite');
 var passport = require('passport');
+const mongoose = require('mongoose');
 var authenticate = require('../authenticate');
 const cors = require('./cors');
 
@@ -11,13 +12,21 @@ FavoriteRouter.use(bodyParser.json());
 FavoriteRouter.route('/')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-    Favorites.find({})
+    Favorites.findOne({user: req.user._id})
     .populate('user')
     .populate('dishes')
     .then((favorites) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(favorites);
+        if (!favorites){
+            console.log("Favorites not found for " + req.user._id);
+            res.statusCode = 404;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(favorites);
+        }
+        else{
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(favorites);
+        }
     }, (err) => next(err))
     .catch((err) => next(err));
 })

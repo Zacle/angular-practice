@@ -50,7 +50,7 @@ router.post('/signup', cors.corsWithOptions, (req, res, next) => {
   });
 });
 
-router.post('/login', cors.corsWithOptions, (req, res) => {
+router.post('/login', cors.corsWithOptions, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err)
       return next(err);
