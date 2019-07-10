@@ -10,7 +10,7 @@ var config = require('./config.js');
 
 exports.local = passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.deserializeUser(User.deserializeUser());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
 exports.getToken = function(user) {
     return jwt.sign(user, config.secretKey,
